@@ -1,0 +1,244 @@
+﻿@model ITSnooze.Models.Azure_Snooze_Weekend
+@{
+    ViewBag.Title = "Update";
+}
+<h2>Update</h2>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script>
+    function dateChanged() {
+        //This func is called on button click
+        var a = document.getElementById("StartDateTime").value;
+        var b = document.getElementById("StopDateTime").value;
+        var c = '1';
+        //c is a variable to ensure validation of starttime < stop time
+        //the value of c is checked in the Edit controller method
+        var d = document.getElementById("Servers").value;
+        var e = document.getElementById("Time").checked;
+        
+
+        if ((b >= a) && (e== true)) {
+            
+            alert("Select a stop time later than start time");
+            c = '0';
+            $.ajax({
+                type: "POST",
+                dataType: 'text',
+                url: "../Azure_Snooze_Weekend/getdetails?x=" + a + "&y=" + b + "&flag=" + c + "&z=" + d,
+
+            })
+        }
+        else {
+            c = '1';
+            $.ajax({
+                type: "POST",
+                dataType: 'text',
+                url: "../Azure_Snooze_Weekend/getdetails?x=" + a + "&y=" + b + "&flag=" + c + "&z=" + d,
+
+            })
+        }
+
+    }
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+    //Used to retrieve the server names based upon the AppTeam selected.
+    $(function () {
+        $("#AppTeam").change(function () {            
+            var selectedItem = $(this).val();
+            var showSelectProper = $("#showSelectProper");
+            if (selectedItem == 0) {
+                showSelectProper.show();
+            }
+            else {
+                showSelectProper.hide();
+                var xServers = $("#Servers");
+                var serversProgress = $("#servers-loading-progress");
+                serversProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    dataType: 'json',
+                    url: "../Azure_Snooze_Weekend/GetServerNames?EngTeamName=" + selectedItem,
+                    success: function (data) {
+                        xServers.html('');
+                        var options = "<option>Select</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            options += "<option val='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        xServers.append(options);
+
+                        serversProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve servers.');
+                        serversProgress.hide();
+                    }
+
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    // to populate the start date and end date based upon the server selected.
+    $(function () {
+        $("#Servers").change(function () {
+            var dat, dat2;
+            var selectedItem = $(this).val();
+            if (selectedItem == 0) {
+            }
+            else {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    dataType: 'json',
+                    url: "../Azure_Snooze_Weekend/GetServerDates?ServerName=" + selectedItem,
+                    success: function (data) {
+                        dat = new Date(data[0].dateStart);
+                        dat3 = new Date();
+                        dat3.setDate(dat3.getDate() + 7);
+                        dat3 = dat3.toISOString();
+                        dat2 = new Date(data[0].dateEnd);
+                        dat4 = new Date();
+                        dat4.setDate(dat2.getDate()+7)
+                         alert(dat3);                      
+                             var picker=$('#datetimepicker2').datetimepicker({
+                             defaultDate: data[0].dateStart,
+                             minDate: moment(),
+                             maxDate: dat3,
+                             daysOfWeekDisabled: [2, 3, 4]
+                         });
+                         
+                         $('#datetimepicker1').datetimepicker({
+                             defaultDate: dat2,
+                             minDate: moment(),
+                             maxDate: dat3,
+                             daysOfWeekDisabled: [2, 3, 4]
+                         });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve dates.');                       
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    //To display the SnoozeStart and Snooze End based on checkbox selection
+    $(document).ready(function () {
+        if ($('#Time').is(":checked"))
+
+            $('#TimeSelect').show("fast");
+        else
+            $('#TimeSelect').hide("fast");
+    });
+
+    $(document).ready(function () {
+        $('#Time').click(function () {
+            if (this.checked) {
+                $('#TimeSelect').show("fast");
+            }
+            else
+                $('#TimeSelect').hide("fast");
+        });
+    });
+
+</script>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Weekend Snooze/Unsnooze Request</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppTeam, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("AppTeam", ViewData["AppTeam"] as List<SelectListItem>, new { @class = "form-control" })
+                <span id="showSelectProper" style="display: none;">Select a team</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Server, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select id="Servers" name="Server" class="form-control"></select>
+                <span id="servers-loading-progress" style="display: none;">Please wait..</span>
+                <span id="select-proper-server" style="display: none;">Select a server..</span>
+            </div>
+        </div>
+
+      @*  <div>
+        <input type="text" id="date" />
+    </div>*@
+
+        <div class="form-group">
+            @Html.Label("Choose Exception", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="checkbox" name="Exception" value="True" id="Exception" class="checkbox" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Choose Time", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="checkbox" name="Time" value="True" id="Time" class="checkbox" /><br />
+            </div>
+            <div id="TimeSelect">
+                @*date time picker 1*@
+                <div class="form-group">
+                    @Html.Label("Snooze Start", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class='col-sm-3'>
+                                <div class='input-group date' id='datetimepicker2'>
+                                    <input type='text' id="StopDateTime" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Snooze End", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class='col-sm-3'>
+                                <div class='input-group date' id='datetimepicker1'>
+                                    <input type='text' id="StartDateTime" class="form-control" onchange="dateChanged()" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.LastModifiedTime, htmlAttributes: new { Value = System.DateTime.Now.ToString(), @class = "form-control" })
+        @Html.HiddenFor(model => model.LastModifiedBy, htmlAttributes: new { Value = (string)System.Web.HttpContext.Current.User.Identity.Name, @class = "form-control" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Update" class="btn btn-default" onclick="dateChanged()" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

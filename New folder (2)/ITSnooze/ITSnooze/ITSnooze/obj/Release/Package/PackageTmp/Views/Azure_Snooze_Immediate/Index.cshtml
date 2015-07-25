@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ITSnooze.Models.Azure_Snooze_Immediate>
+
+@{
+    ViewBag.Title = "Immediate Snooze/Unsnooze Request";
+}
+
+<h2>Immediate Snooze/Unsnooze Request</h2>
+
+<p>
+    @Html.ActionLink("Create New Immediate Snooze/Unsnooze Request ", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Server)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppTeam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Flag)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Server)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AppTeam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Flag)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedTime)
+        </td>
+        <td>
+          @*  @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

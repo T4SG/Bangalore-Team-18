@@ -1,0 +1,90 @@
+﻿@model ITSnooze.Models.Azure_Snooze_Weekend
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Weekend Snooze/Unsnooze Request</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Server)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Server)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppTeam)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppTeam)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Exception)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Exception)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SnoozeStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SnoozeStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SnoozeEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SnoozeEnd)
+        </dd>
+
+      @*  <dt>
+            @Html.DisplayNameFor(model => model.StartStatus)
+        </dt>
+
+       <dd>
+        @Html.DisplayFor(model => model.StartStatus)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.StopStatus)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.StopStatus)
+    </dd>
+    *@
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedTime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+  @*  @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

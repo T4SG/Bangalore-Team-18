@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ITSnooze.Models.Azure_Snooze_Weekend>
+
+@{
+    ViewBag.Title = "Weekend Snooze/Unsnooze";
+}
+
+<h2>Weekend Snooze/Unsnooze</h2>
+
+<p>
+    @Html.ActionLink("Update Snooze/Unsnooze Request", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Server)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppTeam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Exception)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SnoozeStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SnoozeEnd)
+        </th>
+       @* <th>
+        @Html.DisplayNameFor(model => model.StartStatus)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.StopStatus)
+    </th>*@
+    <th>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Server)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AppTeam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exception)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SnoozeStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SnoozeEnd)
+        </td>
+      @*  <td>
+        @Html.DisplayFor(modelItem => item.StartStatus)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StopStatus)
+    </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedTime)
+        </td>
+        <td>
+         
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

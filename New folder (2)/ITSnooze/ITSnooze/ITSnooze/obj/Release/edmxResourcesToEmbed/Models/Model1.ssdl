@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ITSnoozeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Azure_Snooze_Immediate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Server" Type="nvarchar" MaxLength="500" />
+    <Property Name="AppTeam" Type="nvarchar" MaxLength="500" />
+    <Property Name="Flag" Type="int" />
+    <Property Name="LastModifiedBy" Type="nvarchar" MaxLength="1000" />
+    <Property Name="LastModifiedTime" Type="datetime" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Azure_Snooze_Schedule">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Server" Type="nvarchar" MaxLength="1000" />
+    <Property Name="AppTeam" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Flag" Type="int" />
+    <Property Name="Time" Type="datetime" />
+    <Property Name="LastModifiedBy" Type="nvarchar" MaxLength="1000" />
+    <Property Name="LastModifiedTime" Type="datetime" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Azure_Snooze_Weekend">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Server" Type="nvarchar" MaxLength="1000" />
+    <Property Name="AppTeam" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Exception" Type="bit" />
+    <Property Name="SnoozeStart" Type="datetime" />
+    <Property Name="SnoozeEnd" Type="datetime" />
+    <Property Name="StartStatus" Type="bit" />
+    <Property Name="StopStatus" Type="bit" />
+    <Property Name="LastModifiedBy" Type="nvarchar" MaxLength="1000" />
+    <Property Name="LastModifiedTime" Type="datetime" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="ITSnoozeModelStoreContainer">
+    <EntitySet Name="Azure_Snooze_Immediate" EntityType="Self.Azure_Snooze_Immediate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Azure_Snooze_Schedule" EntityType="Self.Azure_Snooze_Schedule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Azure_Snooze_Weekend" EntityType="Self.Azure_Snooze_Weekend" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

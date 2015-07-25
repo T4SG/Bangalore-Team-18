@@ -1,0 +1,100 @@
+﻿@model ITSnooze.Models.Azure_Snooze_Immediate
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //Used to retrieve the server names based upon the AppTeam selected.
+        $("#AppTeam").change(function () {
+            var selectedItem = $(this).val();
+            var showSelectProper = $("#showSelectProper");
+            if (selectedItem == 0) {
+                showSelectProper.show();
+            }
+            else {
+                showSelectProper.hide();
+                var xServers = $("#Servers");
+                var serversProgress = $("#servers-loading-progress");
+                serversProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    dataType: 'json',
+                    url: "../Azure_Snooze_Immediate/GetServerNames?AppTeamName=" + selectedItem,
+                    success: function (data) {
+                        xServers.html('');
+                        var options = "<option>Select</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            options += "<option val='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        xServers.append(options);
+
+                        serversProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve servers.');
+                        serversProgress.hide();
+                    }
+
+                });
+            }
+        });
+    });
+</script>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>New Immediate Snooze/Unsnooze Request</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+       
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppTeam, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("AppTeam", ViewData["AppTeam"] as List<SelectListItem>, new { @class = "form-control" })
+                <span id="showSelectProper" style="display: none;">Select a team</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Server, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select id="Servers" name="Server" class="form-control"></select>
+                <span id="servers-loading-progress" style="display: none;">Please wait..</span>
+                <span id="select-proper-server" style="display: none;">Select a server..</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Flag, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Flag", ViewData["Flag"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+        </div>
+    
+        @Html.HiddenFor(model => model.LastModifiedTime, htmlAttributes: new { Value = System.DateTime.Now.ToString(), @class = "form-control" })
+        @Html.HiddenFor(model => model.LastModifiedBy, htmlAttributes: new { Value = (string)System.Web.HttpContext.Current.User.Identity.Name, @class = "form-control" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" onclick="dateChanged()" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
