@@ -2,6 +2,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Sponsors</title>
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
     <body>
 
@@ -16,25 +19,23 @@
 
        ?>
         <div>
-            <td>Sponsors Database</td>
-        <table border="2" style= "background-color: #84ed86; color: #761a9b; margin: 0 auto;" >
-	
-	<tr>  
-            <th> Serial Number </th>
-                    <th>PI_Sponsor Name</th>
-                    <th>Name</th>
-                     <th>Sponsorship</th>
-                    <th>Stamp Sponsor name</th>
-                    <th>Amount</th>
-                    <th>Year</th>
-                    
-
-            </tr>
-
-        <?php
-
+		
+		
+		<table class="table">
+    <thead>
+      <tr>
+        <th> Serial Number </th>
+        <th>PI_Sponsor Name</th>
+        <th>Name</th>
+        <th>Sponsorship</th>
+        <th>Stamp Sponsor name</th>
+        <th>Amount</th>
+        <th>Year</th>
+      </tr>
+    </thead>
+    <tbody>
+           <?php
              while($row=  mysqli_fetch_array($con))
-
              {
                  ?>
             <tr>
@@ -44,13 +45,13 @@
                 <td><?php echo $row['Sponcorship'] ;?></td>
                 <td><?php echo $row['StampSponcorName'] ;?></td>
                 <td><?php echo $row['Amount'] ;?></td>
-                <td><?php echo $row['Year'] ;?></td>
-                
+                <td><?php echo $row['Year'] ;?></td>    
             </tr>
         <?php
              }
              ?>
-             </table>
+    </tbody>
+  </table>
             </div>
     </body>
 </html>
